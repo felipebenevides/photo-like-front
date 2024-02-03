@@ -1,3 +1,9 @@
+
+
+<img width="1080" alt="image" src="https://github.com/felipebenevides/photo-like-front/assets/26488093/b611a0d2-fab2-489b-ac3d-324e5e3fada9">
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
