@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PhotoList from '../components/PhotoList';
+import { Card, CardBody } from '@chakra-ui/react'
+import { Box, Center, ChakraProvider, Container, Heading } from '@chakra-ui/react';
 
-// Definindo o tipo para uma foto
+
 interface Photo {
   id: number;
   name: string;
@@ -13,6 +15,7 @@ interface Count {
   photoId: number;
   count: number;
 }
+
 
 // Função para curtir uma foto
 const likePhoto = (photoId: number) => {
@@ -43,11 +46,10 @@ const unlikePhoto = (photoId: number) => {
 };
 
 const PhotosPage: React.FC = () => {
-  const [photos, setPhotos] = useState<Photo[]>([]); // Definindo o tipo explícito para photos como um array de Photo
+  const [photos, setPhotos] = useState<Photo[]>([]);
   const [totalLikes, setTotalLikes] = useState<Count[]>([]);
 
   useEffect(() => {
-    // Função para buscar as fotos da API
     const fetchPhotos = async () => {
       try {
         const response = await fetch('http://localhost:5083/api/images');
@@ -61,36 +63,23 @@ const PhotosPage: React.FC = () => {
       }
     };
 
-    // Função para buscar o total de curtidas
     const fetchTotalLikes = async () => {
       try {
         const response = await fetch('http://localhost:3000/photo-likes/like/countAll');
-
-
         if (!response.ok) {
           throw new Error('Failed to fetch total likes');
         }
         const data = await response.json();
-        console.log('total list',data.count)
-
-        setTotalLikes(data.count); // Supondo que a resposta do servidor inclua um objeto com a contagem de curtidas
+        setTotalLikes(data.count);
       } catch (error) {
         console.error('Error fetching total likes:', error);
       }
     };
 
-    // Chamando a função de busca das fotos ao montar a página
     fetchPhotos();
     fetchTotalLikes();
-
-    console.log('totalLikes',totalLikes);
   }, []);
 
-  useEffect(() => {
-    console.log('totalLikes', totalLikes);
-  }, [totalLikes]);
-
-  // Função para curtir uma foto
   const handleClickFollow = async (photoId: number) => {
     try {
       await likePhoto(photoId); // Chamando a função para curtir a foto
@@ -104,31 +93,37 @@ const PhotosPage: React.FC = () => {
     }
   };
 
-  // Função para descurtir uma foto
-  const handleClickUnfollow = async (photoId: number) => {
-    try {
-      await unlikePhoto(photoId); // Chamando a função para descurtir a foto
-      // Atualizando a lista de fotos após descurtir
-      const updatedPhotos = photos.map((photo) =>
-        photo.id === photoId ? { ...photo, liked: false } : photo
-      );
-      setPhotos(updatedPhotos);
-    } catch (error) {
-      console.error('Error unliking photo:', error);
-    }
-  };
+    // Função para descurtir uma foto
+    const handleClickUnfollow = async (photoId: number) => {
+      try {
+        await unlikePhoto(photoId); // Chamando a função para descurtir a foto
+        // Atualizando a lista de fotos após descurtir
+        const updatedPhotos = photos.map((photo) =>
+          photo.id === photoId ? { ...photo, liked: false } : photo
+        );
+        setPhotos(updatedPhotos);
+      } catch (error) {
+        console.error('Error unliking photo:', error);
+      }
+    };
+  
 
   return (
-    <div>
-    <h1>Lista de Fotos</h1>
-    <PhotoList photos={photos} handleClickFollow={handleClickFollow} handleClickUnfollow={handleClickUnfollow} totalLikes={totalLikes}/>
-    <p>Total de curtidas:</p>
-    <ul>
-      {totalLikes.map((like) => (
-        <li key={like.photoId}>{`Foto ID ${like.photoId}: ${like.count} curtidas`}</li>
-      ))}
-    </ul>
-  </div>
+    <div><PhotoList photos={photos} handleClickFollow={handleClickFollow} handleClickUnfollow={handleClickUnfollow} totalLikes={totalLikes} />
+     
+     <Box>
+     <p>Total de curtidas:</p>
+      <ul>
+        {totalLikes.map((like) => (
+          <li key={like.photoId}>{`Foto ID ${like.photoId}: ${like.count} curtidas`}</li>
+        ))}
+      </ul>
+
+     </Box>
+      
+    </div>
+
+
   );
 };
 
