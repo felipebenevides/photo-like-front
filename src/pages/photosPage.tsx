@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PhotoList from '../components/PhotoList';
-import { Card, CardBody } from '@chakra-ui/react'
-import { Box, Center, ChakraProvider, Container, Heading } from '@chakra-ui/react';
+import { Box, Center, ChakraProvider, Container } from '@chakra-ui/react';
+
 
 
 interface Photo {
@@ -26,9 +26,9 @@ const likePhoto = (photoId: number) => {
       'Content-Type': 'application/json'
     }
   })
-  .then(response => response.json())
-  .then(data => console.log('Photo liked:', data))
-  .catch(error => console.error('Error liking photo:', error));
+    .then(response => response.json())
+    .then(data => console.log('Photo liked:', data))
+    .catch(error => console.error('Error liking photo:', error));
 };
 
 // Função para descurtir uma foto
@@ -40,9 +40,9 @@ const unlikePhoto = (photoId: number) => {
       'Content-Type': 'application/json'
     }
   })
-  .then(response => response.json())
-  .then(data => console.log('Photo unliked:', data))
-  .catch(error => console.error('Error unliking photo:', error));
+    .then(response => response.json())
+    .then(data => console.log('Photo unliked:', data))
+    .catch(error => console.error('Error unliking photo:', error));
 };
 
 const PhotosPage: React.FC = () => {
@@ -93,36 +93,41 @@ const PhotosPage: React.FC = () => {
     }
   };
 
-    // Função para descurtir uma foto
-    const handleClickUnfollow = async (photoId: number) => {
-      try {
-        await unlikePhoto(photoId); // Chamando a função para descurtir a foto
-        // Atualizando a lista de fotos após descurtir
-        const updatedPhotos = photos.map((photo) =>
-          photo.id === photoId ? { ...photo, liked: false } : photo
-        );
-        setPhotos(updatedPhotos);
-      } catch (error) {
-        console.error('Error unliking photo:', error);
-      }
-    };
-  
+  // Função para descurtir uma foto
+  const handleClickUnfollow = async (photoId: number) => {
+    try {
+      await unlikePhoto(photoId); // Chamando a função para descurtir a foto
+      // Atualizando a lista de fotos após descurtir
+      const updatedPhotos = photos.map((photo) =>
+        photo.id === photoId ? { ...photo, liked: false } : photo
+      );
+      setPhotos(updatedPhotos);
+    } catch (error) {
+      console.error('Error unliking photo:', error);
+    }
+  };
+
 
   return (
-    <div><PhotoList photos={photos} handleClickFollow={handleClickFollow} handleClickUnfollow={handleClickUnfollow} totalLikes={totalLikes} />
-     
-     <Box>
-     <p>Total de curtidas:</p>
-      <ul>
-        {totalLikes.map((like) => (
-          <li key={like.photoId}>{`Foto ID ${like.photoId}: ${like.count} curtidas`}</li>
-        ))}
-      </ul>
+    <ChakraProvider>
+      <Container >
+        <Box >
+          
+             <PhotoList photos={photos} handleClickFollow={handleClickFollow} handleClickUnfollow={handleClickUnfollow} totalLikes={totalLikes} />
 
-     </Box>
-      
-    </div>
+              <Box>
+                <p>Total de curtidas:</p>
+                <ul>
+                  {totalLikes.map((like) => (
+                    <li key={like.photoId}>{`Foto ID ${like.photoId}: ${like.count} curtidas`}</li>
+                  ))}
+                </ul>
 
+              </Box>
+
+        </Box>
+      </Container>
+    </ChakraProvider>
 
   );
 };

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { FaHeart, FaHeartBroken } from 'react-icons/fa';
-import { Box, Center, ChakraProvider, Container, Heading } from '@chakra-ui/react';
-import { Button } from '@chakra-ui/react';
-
+import { Flex, Box, Button, IconButton, Center, ChakraProvider, Container, Heading } from '@chakra-ui/react';
 
 
 interface Photo {
@@ -55,21 +53,35 @@ const PhotoList: React.FC<PhotoListProps> = ({ photos, handleClickFollow, handle
                         alt={currentPhoto.name}
                         style={{ width: '1000px', height: '600px' }} // Defina o tamanho desejado aqui
                     />
-                    <div>
-                        <FaHeartBroken onClick={() => handleClickUnfollow(currentPhoto.id)} />
-                        <FaHeart onClick={() => handleClickFollow(currentPhoto.id)} />
-                        {/* <span>{likesCount} curtidas</span> */}
-                    </div>
-                    <div>
 
-                        <button colorScheme='blue' onClick={prevPhoto}>Anterior</button>
-                        <button onClick={nextPhoto}>Próxima</button>
-                    </div>
+                    <Flex justify="space-between" align="center" width="100%">
+                        {/* Primeiro grupo de botões */}
+                        <Flex align="left">
+                            <IconButton
+                                aria-label="Curtir"
+                                icon={<FaHeartBroken />}
+                                onClick={() => handleClickFollow(currentPhoto.id)}
+                                colorScheme="red"
+                            />
+                            <IconButton
+                                aria-label="Descurtir"
+                                icon={<FaHeart />}
+                                onClick={() => handleClickUnfollow(currentPhoto.id)}
+                                colorScheme="red"
+                                ml="3" // Adiciona espaço à esquerda do segundo botão
+                            />
+                        </Flex>
+
+                        {/* Segundo grupo de botões */}
+                        <Flex align="right">
+                            <Button colorScheme="blue" onClick={prevPhoto}>Anterior</Button>
+                            <Button colorScheme="blue" onClick={nextPhoto} ml="3">Próxima</Button> {/* Adiciona espaço à esquerda do segundo botão */}
+                        </Flex>
+                    </Flex>
+
                 </div>
             </div>
-
         </Box>
-
     );
 };
 
