@@ -1,6 +1,6 @@
 
 
-<img width="1080" alt="image" src="https://github.com/felipebenevides/photo-like-front/assets/26488093/b611a0d2-fab2-489b-ac3d-324e5e3fada9">
+<img width="1080" alt="image" src="https://github.com/felipebenevides/photo-like-front/assets/26488093/e0fbe5e0-c242-4ace-9c9f-9e06bd206cbe">
 
 
 
